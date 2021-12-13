@@ -7,6 +7,14 @@ window.geometry('640x400')
 window.state('zoomed')
 window.resizable(True, True)
 
+
+
+def test_click(event):
+    b = Button(mapCanvas, text='test btn', width=16, height=4)
+    b.place(x=event.x, y=event.y)
+
+
+
 logicFrame = LabelFrame(window, text='logic', width=150, relief='groove')
 logicFrame.pack(side='left', fill='both')
 
@@ -20,10 +28,14 @@ logicList.pack(side='left', fill='both', expand=True)
 logicList_xScrollbar.config(command=logicList.xview)
 logicList_yScrollbar.config(command=logicList.yview)
 
-logicList.insert(END, 'and')
-logicList.insert(END, 'or')
-logicList.insert(END, 'xor')
-logicList.insert(END, 'not')
+logicList.insert(END, 'AND')
+logicList.insert(END, 'OR')
+logicList.insert(END, 'NOT')
+logicList.insert(END, 'BUFFER')
+logicList.insert(END, 'NAND')
+logicList.insert(END, 'NOR')
+logicList.insert(END, 'XOR')
+logicList.insert(END, 'XNOR')
 
 
 mapFrame = LabelFrame(window, text='map', relief='groove')
@@ -38,8 +50,9 @@ mapCanvas = Canvas(mapFrame, bg='black', xscrollcommand=mapCanvas_xScrollbar.set
 mapCanvas.pack(side='left', fill='both', expand=True)
 mapCanvas_xScrollbar.config(command=mapCanvas.xview)
 mapCanvas_yScrollbar.config(command=mapCanvas.xview)
+mapCanvas.focus_set()
 
-
+mapCanvas.bind('<Button-1>', test_click)
 
 
 window.mainloop()
