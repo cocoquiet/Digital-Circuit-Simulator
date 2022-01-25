@@ -11,7 +11,7 @@ window.resizable(True, True)
 
 def test_click(event):
     b = Button(mapCanvas, text='test btn', width=16, height=4)
-    b.place(x=event.x, y=event.y)
+    b.place(x=event.x, y=event.y, anchor='center')
 
 
 
