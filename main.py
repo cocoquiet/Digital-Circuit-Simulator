@@ -14,7 +14,7 @@ def clickMap(event):
     listIndex = logicList.curselection()
     
     if listIndex == ():
-        msgbox.showwarning('경고!', '논리를 선택하지 않았습니다.')
+        msgbox.showwarning('경고', '논리를 선택하지 않았습니다.')
     else:
         modelBtn = Button(mapCanvas, text=basicModel[listIndex[0]], width=16, height=4)
         modelBtn.place(x=event.x, y=event.y, anchor='center')
