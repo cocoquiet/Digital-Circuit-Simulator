@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter.ttk as ttk
+import tkinter.messagebox as msgbox
 
 window = Tk()
 window.title('digital circuit simulator')
@@ -9,9 +10,18 @@ window.resizable(True, True)
 
 
 
-def test_click(event):
-    b = Button(mapCanvas, text='test btn', width=16, height=4)
-    b.place(x=event.x, y=event.y)
+def clickMap(event):
+    listIndex = logicList.curselection()
+    
+    if listIndex == ():
+        msgbox.showwarning('경고!', '논리를 선택하지 않았습니다.')
+    else:
+        modelBtn = Button(mapCanvas, text=basicModel[listIndex[0]], width=16, height=4)
+        modelBtn.place(x=event.x, y=event.y, anchor='center')
+
+
+
+basicModel = ['AND', 'OR', 'NOT', 'BUFFER', 'NAND', 'NOR', 'XOR', 'XNOR']
 
 
 
@@ -28,14 +38,8 @@ logicList.pack(side='left', fill='both', expand=True)
 logicList_xScrollbar.config(command=logicList.xview)
 logicList_yScrollbar.config(command=logicList.yview)
 
-logicList.insert(END, 'AND')
-logicList.insert(END, 'OR')
-logicList.insert(END, 'NOT')
-logicList.insert(END, 'BUFFER')
-logicList.insert(END, 'NAND')
-logicList.insert(END, 'NOR')
-logicList.insert(END, 'XOR')
-logicList.insert(END, 'XNOR')
+for logic in basicModel:
+    logicList.insert(END, logic)
 
 
 mapFrame = LabelFrame(window, text='map', relief='groove')
@@ -52,7 +56,7 @@ mapCanvas_xScrollbar.config(command=mapCanvas.xview)
 mapCanvas_yScrollbar.config(command=mapCanvas.xview)
 mapCanvas.focus_set()
 
-mapCanvas.bind('<Button-1>', test_click)
+mapCanvas.bind('<Button-1>', clickMap)
 
 
 window.mainloop()
