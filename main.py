@@ -10,6 +10,7 @@ window.resizable(True, True)
 
 
 
+# 버튼 이벤트
 def clickMap(event):
     listIndex = logicList.curselection()
     
@@ -18,13 +19,18 @@ def clickMap(event):
     else:
         modelBtn = Button(mapCanvas, text=basicModel[listIndex[0]], width=16, height=4)
         modelBtn.place(x=event.x, y=event.y, anchor='center')
+        
+def connectBtn(event):
+    pass
 
 
 
+# 논리 모델
 basicModel = ['AND', 'OR', 'NOT', 'BUFFER', 'NAND', 'NOR', 'XOR', 'XNOR']
 
 
 
+# GUI 디자인
 logicFrame = LabelFrame(window, text='logic', width=150, relief='groove')
 logicFrame.pack(side='left', fill='both')
 
