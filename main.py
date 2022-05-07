@@ -14,7 +14,7 @@ window.resizable(True, True)
 basicModel = ['AND', 'OR', 'NOT', 'BUFFER', 'NAND', 'NOR', 'XOR', 'XNOR']
 
 # 버튼 리스트
-btnList = []
+btnList = {}
 
 # 버튼 연결 리스트
 btnLinkList = []
@@ -33,15 +33,15 @@ def clickMap(event):
     else:
         modelBtn = Button(mapCanvas, text=basicModel[listIndex[0]], width=16, height=4, command= lambda: [btnLinkChkList.append(modelBtn), connectBtn()])
         modelBtn.place(x=event.x, y=event.y, anchor='center')
-        btnList.append((modelBtn, (event.x, event.y)))
+        btnList[modelBtn] = (event.x, event.y)
         
         
 def connectBtn():
     global btnLinkChkList
     if len(btnLinkChkList) == 2:
         btnLinkList.append(btnLinkChkList)
+        mapCanvas.create_line(btnList[btnLinkChkList[0]][0], btnList[btnLinkChkList[0]][1], btnList[btnLinkChkList[1]][0], btnList[btnLinkChkList[1]][1], fill='blue')
         btnLinkChkList = []
-        print(btnLinkList)
 
 
 
