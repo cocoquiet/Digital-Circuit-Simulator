@@ -13,14 +13,9 @@ window.resizable(True, True)
 # 논리 모델
 basicModel = ['AND', 'OR', 'NOT', 'BUFFER', 'NAND', 'NOR', 'XOR', 'XNOR']
 
-# 버튼 리스트
-btnList = {}
-
-# 버튼 연결 리스트
-btnLinkList = []
-
-# 버튼 연결 대기 리스트
-btnLinkChkList = []
+btnList = {}                # 버튼 리스트
+btnLinkList = []            # 버튼 연결 리스트
+btnLinkChkList = []         # 버튼 연결 대기 리스트
 
 
 
@@ -40,7 +35,7 @@ def connectBtn():
     global btnLinkChkList
     if len(btnLinkChkList) == 2:
         btnLinkList.append(btnLinkChkList)
-        mapCanvas.create_line(btnList[btnLinkChkList[0]][0], btnList[btnLinkChkList[0]][1], btnList[btnLinkChkList[1]][0], btnList[btnLinkChkList[1]][1], fill='blue')
+        mapCanvas.create_line(btnList[btnLinkChkList[0]][0], btnList[btnLinkChkList[0]][1], btnList[btnLinkChkList[1]][0], btnList[btnLinkChkList[1]][1], fill='blue', width=5)
         btnLinkChkList = []
 
 
