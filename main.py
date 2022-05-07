@@ -10,6 +10,20 @@ window.resizable(True, True)
 
 
 
+# 논리 모델
+basicModel = ['AND', 'OR', 'NOT', 'BUFFER', 'NAND', 'NOR', 'XOR', 'XNOR']
+
+# 버튼 리스트
+btnList = []
+
+# 버튼 연결 리스트
+btnLinkList = []
+
+# 버튼 연결 대기 리스트
+btnLinkChkList = []
+
+
+
 # 버튼 이벤트
 def clickMap(event):
     listIndex = logicList.curselection()
@@ -17,16 +31,17 @@ def clickMap(event):
     if listIndex == ():
         msgbox.showwarning('경고', '논리를 선택하지 않았습니다.')
     else:
-        modelBtn = Button(mapCanvas, text=basicModel[listIndex[0]], width=16, height=4)
+        modelBtn = Button(mapCanvas, text=basicModel[listIndex[0]], width=16, height=4, command= lambda: [btnLinkChkList.append(modelBtn), connectBtn()])
         modelBtn.place(x=event.x, y=event.y, anchor='center')
+        btnList.append((modelBtn, (event.x, event.y)))
         
-def connectBtn(event):
-    pass
-
-
-
-# 논리 모델
-basicModel = ['AND', 'OR', 'NOT', 'BUFFER', 'NAND', 'NOR', 'XOR', 'XNOR']
+        
+def connectBtn():
+    global btnLinkChkList
+    if len(btnLinkChkList) == 2:
+        btnLinkList.append(btnLinkChkList)
+        btnLinkChkList = []
+        print(btnLinkList)
 
 
 
