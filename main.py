@@ -14,8 +14,9 @@ window.resizable(True, True)
 basicModel = ['AND', 'OR', 'NOT', 'BUFFER', 'NAND', 'NOR', 'XOR', 'XNOR']
 
 btnList = {}                # 버튼 리스트
-btnLinkList = []            # 버튼 연결 리스트
 btnLinkChkList = []         # 버튼 연결 대기 리스트
+btnLinkList = []            # 버튼 연결 리스트
+btnLinkLineList = []        # 버튼 연결 선 리스트
 
 
 
@@ -26,17 +27,31 @@ def clickMap(event):
     if listIndex == ():
         msgbox.showwarning('경고', '논리를 선택하지 않았습니다.')
     else:
-        modelBtn = Button(mapCanvas, text=basicModel[listIndex[0]], width=16, height=4, command= lambda: [btnLinkChkList.append(modelBtn), connectBtn()])
+        modelBtn = Button(mapCanvas, text=basicModel[listIndex[0]], width=16, height=4, command= lambda: [btnLinkChkList.append(modelBtn), connectBtn(event)])
         modelBtn.place(x=event.x, y=event.y, anchor='center')
         btnList[modelBtn] = (event.x, event.y)
         
         
-def connectBtn():
+def connectBtn(event):
     global btnLinkChkList
-    if len(btnLinkChkList) == 2:
-        btnLinkList.append(btnLinkChkList)
-        mapCanvas.create_line(btnList[btnLinkChkList[0]][0], btnList[btnLinkChkList[0]][1], btnList[btnLinkChkList[1]][0], btnList[btnLinkChkList[1]][1], fill='blue', width=5)
-        btnLinkChkList = []
+    
+    if len(btnLinkChkList) == 2 and btnLinkChkList[0] != btnLinkChkList[1]:
+        if btnLinkChkList in btnLinkList:
+            mapCanvas.delete(btnLinkLineList[btnLinkList.index(btnLinkChkList)])
+            del btnLinkLineList[btnLinkList.index(btnLinkChkList)]
+            btnLinkList.remove(btnLinkChkList)
+            btnLinkChkList = []
+            
+        elif btnLinkChkList[::-1] in btnLinkList:
+            mapCanvas.delete(btnLinkLineList[btnLinkList.index(btnLinkChkList[::-1])])
+            del btnLinkLineList[btnLinkList.index(btnLinkChkList[::-1])]
+            btnLinkList.remove(btnLinkChkList[::-1])
+            btnLinkChkList = []
+            
+        else:
+            btnLinkList.append(btnLinkChkList)
+            btnLinkLineList.append(mapCanvas.create_line(btnList[btnLinkChkList[0]][0], btnList[btnLinkChkList[0]][1], btnList[btnLinkChkList[1]][0], btnList[btnLinkChkList[1]][1], fill='blue', width=5))
+            btnLinkChkList = []
 
 
 
