@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter.ttk as ttk
 import tkinter.messagebox as msgbox
+import tkinter.font as font
 
 window = Tk()
 window.title('digital circuit simulator')
@@ -13,10 +14,10 @@ window.resizable(True, True)
 # 논리 모델
 basicModel = ['AND', 'OR', 'NOT', 'BUFFER', 'NAND', 'NOR', 'XOR', 'XNOR']
 
-btnList = {}                # 버튼 리스트
-btnLinkChkList = []         # 버튼 연결 대기 리스트
-btnLinkList = []            # 버튼 연결 리스트
-btnLinkLineList = []        # 버튼 연결 선 리스트
+btnList = {}                    # 버튼 리스트
+btnConnectList = []             # 버튼 연결 리스트
+btnConnectWaitList = []         # 버튼 연결 대기 리스트
+btnConnectLineList = []         # 버튼 연결 선 리스트
 
 
 
@@ -27,31 +28,42 @@ def clickMap(event):
     if listIndex == ():
         msgbox.showwarning('경고', '논리를 선택하지 않았습니다.')
     else:
-        modelBtn = Button(mapCanvas, text=basicModel[listIndex[0]], width=16, height=4, command= lambda: [btnLinkChkList.append(modelBtn), connectBtn(event)])
+        modelBtn = Button(mapCanvas, text=basicModel[listIndex[0]], width=16, height=4, command= lambda: [highlightBtn(modelBtn), connectBtn(event, modelBtn)])
         modelBtn.place(x=event.x, y=event.y, anchor='center')
         btnList[modelBtn] = (event.x, event.y)
         
         
-def connectBtn(event):
-    global btnLinkChkList
+
+def highlightBtn(btn):
+    btn['font'] = font.Font(weight='bold')
+        
+        
+def connectBtn(event, btn):
+    global btnConnectWaitList 
     
-    if len(btnLinkChkList) == 2 and btnLinkChkList[0] != btnLinkChkList[1]:
-        if btnLinkChkList in btnLinkList:
-            mapCanvas.delete(btnLinkLineList[btnLinkList.index(btnLinkChkList)])
-            del btnLinkLineList[btnLinkList.index(btnLinkChkList)]
-            btnLinkList.remove(btnLinkChkList)
-            btnLinkChkList = []
-            
-        elif btnLinkChkList[::-1] in btnLinkList:
-            mapCanvas.delete(btnLinkLineList[btnLinkList.index(btnLinkChkList[::-1])])
-            del btnLinkLineList[btnLinkList.index(btnLinkChkList[::-1])]
-            btnLinkList.remove(btnLinkChkList[::-1])
-            btnLinkChkList = []
-            
-        else:
-            btnLinkList.append(btnLinkChkList)
-            btnLinkLineList.append(mapCanvas.create_line(btnList[btnLinkChkList[0]][0], btnList[btnLinkChkList[0]][1], btnList[btnLinkChkList[1]][0], btnList[btnLinkChkList[1]][1], fill='blue', width=5))
-            btnLinkChkList = []
+    btnConnectWaitList.append(btn)
+    
+    if btnConnectWaitList[0] == btnConnectWaitList[1]:
+        btnConnectWaitList = []
+    
+    else:
+        if len(btnConnectWaitList) == 2:
+            if btnConnectWaitList in btnConnectList:
+                mapCanvas.delete(btnConnectLineList[btnConnectList.index(btnConnectWaitList)])
+                del btnConnectLineList[btnConnectList.index(btnConnectWaitList)]
+                btnConnectList.remove(btnConnectWaitList)
+                btnConnectWaitList = []
+                
+            elif btnConnectWaitList[::-1] in btnConnectList:
+                mapCanvas.delete(btnConnectLineList[btnConnectList.index(btnConnectWaitList[::-1])])
+                del btnConnectLineList[btnConnectList.index(btnConnectWaitList[::-1])]
+                btnConnectList.remove(btnConnectWaitList[::-1])
+                btnConnectWaitList = []
+                
+            else:
+                btnConnectList.append(btnConnectWaitList)
+                btnConnectLineList.append(mapCanvas.create_line(btnList[btnConnectWaitList[0]][0], btnList[btnConnectWaitList[0]][1], btnList[btnConnectWaitList[1]][0], btnList[btnConnectWaitList[1]][1], fill='blue', width=5))
+                btnConnectWaitList = []
 
 
 
